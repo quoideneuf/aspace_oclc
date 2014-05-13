@@ -1,0 +1,58 @@
+.oclc-selected {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.oclc-result {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.oclc-record-title {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.oclc-record-summary-overflow {
+  display:none;
+}
+
+.oclc-record-summary-toggle {
+  cursor: pointer;
+}
+
+.oclc-record-summary-less {
+  display:none;
+}
+
+.record-pane {
+    min-height: 120px;
+}
+
+.form-search,
+.selected-container {
+    border: 1px solid #DDD;
+    border-radius: 5px;
+    background-color: #F1F1F1;
+    padding: 10px;
+}
+
+#import-selected {
+    width: 100%;
+}
+
+#selected {
+    margin: 10px 0 20px;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.oclc-result .alert-success {
+    width: 34px;
+}
+
+.oclc-selected {
+    margin: 5px 0;
+    border-bottom: 1px solid #Fafafa;
+    padding: 5px 0;
+}

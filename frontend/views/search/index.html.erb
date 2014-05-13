@@ -1,0 +1,119 @@
+<%= setup_context(:title => I18n.t("plugins.oclc.search_catalog"), :controller => :oclc) %>
+
+<div class="row-fluid">
+  <div class="span12">
+    <div class="record-pane">
+      <div class="row-fluid">
+        <div class="span8">
+          <h2><%= I18n.t("plugins.oclc.search_catalog") %></h2>
+
+          <%= render_aspace_partial :partial => "shared/flash_messages" %>
+
+          <%= form_tag({:controller => :oclc, :action => :search}, {:id => "oclc_search", :class => "form-search", :method => "GET"}) do |form| %>
+            <div class='control-group required'> 
+             <label class='control-label' for="oclc-search-query"><%= I18n.t("plugins.oclc.search_catalog") %></label>
+             <div class='controls'> 
+              <input type="text" name="query" class="oclc-search-query" id="oclc-search-query" class="input-large"></input>
+              </div>
+            </div>              
+            <div class='control-group'> 
+              <button type="submit" class="btn btn-primary" id="search-submit">
+               <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+               <%= I18n.t("plugins.oclc.actions.search") %>
+              </button>
+            </div>
+          <% end %>
+
+          <div id="results"></div>
+        </div>
+        <div class="span4">
+          <%= form_tag({:controller => :oclc, :action => :index}, {:id => "oclc_import"}) do |form| %>
+          <div class="selected-container" data-spy="affix">
+            <div class="alert alert-info"><%= I18n.t("plugins.lcnaf.messages.none_selected") %></div>
+            <div id="selected"></div>
+            <button id="import-selected" class="btn btn-primary" disabled="disabled">
+              <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+              <%= I18n.t("plugins.lcnaf.actions.import") %>
+            </button>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="<%= "#{AppConfig[:frontend_prefix]}assets/lcnaf.js" %>"></script>
+<script src="<%= "#{AppConfig[:frontend_prefix]}assets/highlight.js/highlight.pack.js" %>"></script>
+
+<link href="<%= "#{AppConfig[:frontend_prefix]}assets/styles/lcnaf.css" %>" media="all" rel="stylesheet" type="text/css">
+<link href="<%= "#{AppConfig[:frontend_prefix]}assets/highlight.js/styles/tomorrow.css" %>" media="all" rel="stylesheet" type="text/css">
+
+
+<div id="template_oclc_result"><!--
+  <div class="oclc-result">
+    <div class="row-fluid">
+      <div class="span2">
+          <span class="pull-left alert alert-success hide"><%= I18n.t("plugins.oclc.messages.selected") %></span>
+          <button class="btn hide" data-oclcn="${record.oclcn}"><%= I18n.t("plugins.oclc.actions.select") %></button>
+      </div>
+      <div class="span10 oclc-result-record">
+  			<p class="oclc-record-title">${record.title}</p>
+        <p>${record.summary}</p>
+      </div>
+    </div>
+  </div>
+--></div>
+
+<div id="template_oclc_read_more"><!--
+  <span class="oclc-record-summary-overflow">${overflow}</span>
+  <span class="oclc-record-summary-toggle text-info">
+  	&#160;&#187;&#160;
+		<span class="oclc-record-summary-more">
+		  <%= I18n.t("plugins.oclc.actions.read_more") %>
+  	</span>
+		<span class="oclc-record-summary-less">
+		  <%= I18n.t("plugins.oclc.actions.read_less") %>
+  	</span>
+  </span>
+--></div>
+
+<div id="template_oclc_result_summary"><!--
+  <div class="row-fluid">
+    <div class="pull-right text-info">
+      <%= I18n.t("plugins.oclc.result_summary", :page => "${page}", :first_record_index => "${start_index}", :last_record_index => "${last_index}", :hit_count => "${hit_count}") %>
+    </div>
+    <hr/>
+  </div>
+--></div>
+
+<div id="template_oclc_pagination"><!--
+  <div class="row-fluid">
+    <hr/>
+    <div class="oclc-pagination text-center">
+      {if !at_start}<a href='<%= url_for :controller => :oclc, :action => :search %>?query=${query}&start_index=${start_index - records_per_page}' class="btn btn-small"><%= I18n.t("pagination.previous") %> <%= I18n.t("pagination.previous_label") %></a>{/if}
+      {if !at_end}<a href='<%= url_for :controller => :oclc, :action => :search %>?query=${query}&start_index=${start_index + records_per_page}' class="btn btn-small"><%= I18n.t("pagination.next_label") %> <%= I18n.t("pagination.next") %></a>{/if}
+    </div>
+  </div>
+--></div>
+
+<div id="template_oclc_selected"><!--
+  <div data-oclcn="${oclcn}" class="oclc-selected">
+    ${oclcn}
+    <input type="hidden" name="oclcn[]" value="${oclcn}"/>
+    <button class="btn btn-mini remove-selected pull-right"><span class="icon icon-trash"></span></button>
+  </div>
+--></div>
+
+<div id="template_oclc_search_error_title"><!--
+  ${error}
+--></div>
+
+<div id="template_lcnaf_import_success_title"><!--
+  <%= I18n.t("plugins.lcnaf.messages.import_success") %>
+--></div>
+
+<div id="template_lcnaf_import_success_message"><!--
+  <div class="alert alert-success"><%= I18n.t("plugins.lcnaf.messages.import_success_message") %></div>
+--></div>
+

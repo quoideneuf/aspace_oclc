@@ -1,0 +1,14 @@
+en:
+  plugins:
+    oclc:
+      label: Import OCLC Records
+      no_search_key: Missing OCLC Search API key. Contact your system admin.
+      search_catalog: Search OCLC Catalog
+      actions:
+        search: Search
+        select: Select
+        read_more: Read more
+        read_less: Read less
+      messages:
+        selected: Selected
+      result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"
