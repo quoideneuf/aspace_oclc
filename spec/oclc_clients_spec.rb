@@ -73,7 +73,6 @@ describe "OCLC Clientware" do
       tempfile = bib.capture_marc_records(ids)
 
       doc = parse(IO.read(tempfile))
-
       doc.xpath("//datafield[@tag='245']").length.should eq(3)
     end
   end
