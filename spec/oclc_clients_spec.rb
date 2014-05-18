@@ -55,11 +55,26 @@ describe "OCLC Clientware" do
       "https://worldcat.org/bib/data"
     }
 
-    xit "can get a bib record out of the catalog" do
-      bib = OCLCBibGetter.new(base_url, @wscred['key'], @wscred['secret'])
-
+    it "can get a bib record out of the catalog" do
+      bib = OCLCBibGetter.new(base_url, @wscred['search']['key'], @wscred['search']['secret'])
+      
       rec = bib.get(722914006)
-      rec.title.should eq("Donuts")
+
+      doc = parse(rec)
+      doc.xpath("//datafield[@tag='245']/subfield[@code='a']").text().should match /Donuts/
+    end
+
+
+    it "can take a set of OCLC ids and create a Marc XML collection" do
+      bib = OCLCBibGetter.new(base_url, @wscred['search']['key'], @wscred['search']['secret'])
+
+      ids = [722914006, 857981913, 51047061]
+
+      tempfile = bib.capture_marc_records(ids)
+
+      doc = parse(IO.read(tempfile))
+
+      doc.xpath("//datafield[@tag='245']").length.should eq(3)
     end
   end
 end
