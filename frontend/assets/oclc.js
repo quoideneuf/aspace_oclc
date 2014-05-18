@@ -1,6 +1,7 @@
 $(function () {
 
   var $oclcSearchForm = $("#oclc_search");
+  var $oclcImportForm = $("#oclc_import");
 
   var $results = $("#results");
   var $selected = $("#selected");
@@ -75,6 +76,32 @@ $(function () {
       $("#search-submit").removeAttr('disabled');  
     },
     error: function(xhr, textStatus, errorThrows) {
+      AS.openQuickModal("Server Error", errorThrows);
+      $("#search-submit").removeAttr('disabled');
+    },
+  });
+
+
+  $oclcImportForm.ajaxForm({
+    dataType: "json",
+    type: "POST",
+    beforeSubmit: function() {
+      $("#import-selected").attr("disabled", "disabled").addClass("disabled").addClass("busy");
+    },
+    success: function(json) {
+      $("#import-selected").removeClass("busy");
+      if (json.job_uri) {
+        AS.openQuickModal(AS.renderTemplate("template_oclc_import_success_title"), AS.renderTemplate("template_oclc_import_success_message"));
+        setTimeout(function() {
+          window.location = json.job_uri;
+        }, 2000);
+      } else {
+        $("#import-selected").removeAttr("disabled").removeClass("disabled");
+        AS.openQuickModal(AS.renderTemplate("template_oclc_import_error_title", json.error), json.error);
+      }
+    },
+    error: function(xhr, textStatus, errorThrows) {
+      $("#import-selected").removeAttr("disabled").removeClass("disabled").removeClass("busy");
       AS.openQuickModal("Server Error", errorThrows);
       $("#search-submit").removeAttr('disabled');
     },

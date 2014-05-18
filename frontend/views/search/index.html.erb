@@ -27,7 +27,7 @@
           <div id="results"></div>
         </div>
         <div class="span4">
-          <%= form_tag({:controller => :oclc, :action => :index}, {:id => "oclc_import"}) do |form| %>
+          <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_import"}) do |form| %>
           <div class="selected-container" data-spy="affix">
             <div class="alert alert-info"><%= I18n.t("plugins.lcnaf.messages.none_selected") %></div>
             <div id="selected"></div>
@@ -109,11 +109,15 @@
   ${error}
 --></div>
 
-<div id="template_lcnaf_import_success_title"><!--
-  <%= I18n.t("plugins.lcnaf.messages.import_success") %>
+<div id="template_oclc_import_error_title"><!--
+  ${error}
 --></div>
 
-<div id="template_lcnaf_import_success_message"><!--
-  <div class="alert alert-success"><%= I18n.t("plugins.lcnaf.messages.import_success_message") %></div>
+<div id="template_oclc_import_success_title"><!--
+  <%= I18n.t("plugins.oclc.messages.import_success") %>
+--></div>
+
+<div id="template_oclc_import_success_message"><!--
+  <div class="alert alert-success"><%= I18n.t("plugins.oclc.messages.import_success_message") %></div>
 --></div>
 

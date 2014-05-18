@@ -2,8 +2,10 @@ en:
   plugins:
     oclc:
       label: Import OCLC Records
-      no_search_key: Missing OCLC Search API key. Contact your system admin.
-      search_catalog: Search OCLC Catalog
+      search_key: OCLC Search API key
+      metadata_key: OCLC Metadata API key
+      metadata_secret: OCLC Metadata Secret
+      search_catalog: Import Accessions from OCLC
       actions:
         search: Search
         select: Select
@@ -11,4 +13,7 @@ en:
         read_less: Read less
       messages:
         selected: Selected
+        missing_from_config: "The following values need to be configured before the OCLC importer will work: %{params}. Contact your system's administrator."
+        import_success: Import job created
+        import_success_message: Redirecting to the job status page..       
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"

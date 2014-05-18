@@ -12,7 +12,8 @@ class OCLCBibGetter < Struct.new(:base_url, :key, :secret)
 
     ids.each do |id|
       xml = get(id)
-      tempfile.write(xml)
+      record = extract_record(xml)
+      tempfile.write(record)
     end
 
     tempfile.write("\n</collection>")
@@ -21,6 +22,13 @@ class OCLCBibGetter < Struct.new(:base_url, :key, :secret)
     tempfile.rewind
 
     return tempfile
+  end
+
+
+  def extract_record(atom_entry)
+    doc = Nokogiri::XML.parse(atom_entry)
+    doc.remove_namespaces!
+    doc.xpath("//record").to_xml
   end
 
 
