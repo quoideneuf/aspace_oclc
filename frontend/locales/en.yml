@@ -13,6 +13,7 @@ en:
         read_less: Read less
       messages:
         selected: Selected
+        none_selected: None Selected
         missing_from_config: "The following values need to be configured before the OCLC importer will work: %{params}. Contact your system's administrator."
         import_success: Import job created
         import_success_message: Redirecting to the job status page..       
