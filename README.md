@@ -28,6 +28,17 @@ See also:
 
   https://github.com/archivesspace/archivesspace/blob/master/plugins/README.md
 
+Initialize the plugin (you must do this to install required client-side libraries):
+
+    $ ./scripts/initialize_plugin.sh oclc 
+
+You will need keys for two OCLC web services (Search API and Metadata API). You can use the same key for both, or different keys.
+You will also need a secret for the Metadata API. Contact OCLC for more information:
+
+    AppConfig[:oclc_search_key] = { Your Search API Key }
+    AppConfig[:oclc_metadata_key] = { Your Metadata API Key }
+    AppConfig[:oclc_metadata_secrete] = { Your Metadata Secret }
+
 Note that the plugin directory must be 'oclc' or the menu item will not appear in the staff UI.
 
 Note that this plugin will not work with a version of ArchivesSpace that is missing this commit, which adds the accession importer:
