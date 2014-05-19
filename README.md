@@ -28,10 +28,6 @@ See also:
 
   https://github.com/archivesspace/archivesspace/blob/master/plugins/README.md
 
-Initialize the plugin (you must do this to install required client-side libraries):
-
-    $ ./scripts/initialize_plugin.sh oclc 
-
 You will need keys for two OCLC web services (Search API and Metadata API). You can use the same key for both, or different keys.
 You will also need a secret for the Metadata API. Contact OCLC for more information:
 

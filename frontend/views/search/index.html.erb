@@ -29,11 +29,11 @@
         <div class="span4">
           <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_import"}) do |form| %>
           <div class="selected-container" data-spy="affix">
-            <div class="alert alert-info"><%= I18n.t("plugins.lcnaf.messages.none_selected") %></div>
+            <div class="alert alert-info"><%= I18n.t("plugins.oclc.messages.none_selected") %></div>
             <div id="selected"></div>
             <button id="import-selected" class="btn btn-primary" disabled="disabled">
               <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-              <%= I18n.t("plugins.lcnaf.actions.import") %>
+              <%= I18n.t("plugins.oclc.actions.import") %>
             </button>
           </div>
           <% end %>
@@ -43,11 +43,6 @@
   </div>
 </div>
 
-<script src="<%= "#{AppConfig[:frontend_prefix]}assets/lcnaf.js" %>"></script>
-<script src="<%= "#{AppConfig[:frontend_prefix]}assets/highlight.js/highlight.pack.js" %>"></script>
-
-<link href="<%= "#{AppConfig[:frontend_prefix]}assets/styles/lcnaf.css" %>" media="all" rel="stylesheet" type="text/css">
-<link href="<%= "#{AppConfig[:frontend_prefix]}assets/highlight.js/styles/tomorrow.css" %>" media="all" rel="stylesheet" type="text/css">
 
 
 <div id="template_oclc_result"><!--

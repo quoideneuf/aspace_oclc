@@ -1,6 +1,6 @@
 require 'net/http'
 require 'yaml'
-require 'rufus-lru'
+require 'rufus/lru'
 
 class OCLCSearchException < StandardError; end
 
