@@ -9,6 +9,7 @@ en:
       actions:
         search: Search
         select: Select
+        import: Import Selected
         read_more: Read more
         read_less: Read less
       messages:
