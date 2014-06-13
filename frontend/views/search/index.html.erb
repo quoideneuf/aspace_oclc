@@ -4,57 +4,48 @@
   <div class="span12">
     <div class="record-pane">
       <div class="row-fluid">
-        <div class="span8">
+        <div class="span12">
           <h2><%= I18n.t("plugins.oclc.search_catalog") %></h2>
 
           <%= render_aspace_partial :partial => "shared/flash_messages" %>
 
-          <%= form_tag({:controller => :oclc, :action => :search}, {:id => "oclc_search", :class => "form-search", :method => "GET"}) do |form| %>
+          <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_search", :class => "form-search", :method => "POST"}) do |form| %>
             <div class='control-group required'> 
-             <label class='control-label' for="oclc-search-query"><%= I18n.t("plugins.oclc.search_catalog") %></label>
-             <div class='controls'> 
-              <input type="text" name="query" class="oclc-search-query" id="oclc-search-query" class="input-large"></input>
+             <label class='control-label' for="oclc-search-query"><%= I18n.t("plugins.oclc.enter_ids") %></label>
+             <div class='controls' width="50%"> 
+              <textarea name="ids" class="oclc-search-query input-medium" id="oclc-search-query" rows="3"></textarea>
               </div>
             </div>              
             <div class='control-group'> 
-              <button type="submit" class="btn btn-primary" id="search-submit">
+              <button type="submit" class="btn btn-primary" id="search-submit" name="preview">
                <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-               <%= I18n.t("plugins.oclc.actions.search") %>
+               <%= I18n.t("plugins.oclc.actions.preview") %>
+              </button>
+              <button type="submit" class="btn btn-primary" id="import-submit" disabled="disabled">
+               <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
+               <%= I18n.t("plugins.oclc.actions.import") %>
               </button>
             </div>
           <% end %>
 
-          <div id="results"></div>
-        </div>
-        <div class="span4">
-          <%= form_tag({:controller => :oclc, :action => :import}, {:id => "oclc_import"}) do |form| %>
-          <div class="selected-container" data-spy="affix">
-            <div class="alert alert-info"><%= I18n.t("plugins.oclc.messages.none_selected") %></div>
-            <div id="selected"></div>
-            <button id="import-selected" class="btn btn-primary" disabled="disabled">
-              <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
-              <%= I18n.t("plugins.oclc.actions.import") %>
-            </button>
+          <div id="results">
+            
           </div>
-          <% end %>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<%= javascript_include_tag 'oclc/highlight/highlight.pack.js'%>
+<%= stylesheet_link_tag 'oclc/highlight/styles/tomorrow-night-eighties.css'%>
 
 
 <div id="template_oclc_result"><!--
-  <div class="oclc-result">
+  <div class="oclc-result tab-pane fade ${record.classes}" id="${record.oclcn}">
     <div class="row-fluid">
-      <div class="span2">
-          <span class="pull-left alert alert-success hide"><%= I18n.t("plugins.oclc.messages.selected") %></span>
-          <button class="btn hide" data-oclcn="${record.oclcn}"><%= I18n.t("plugins.oclc.actions.select") %></button>
-      </div>
-      <div class="span10 oclc-result-record">
-  			<p class="oclc-record-title">${record.title}</p>
-        <p>${record.summary}</p>
+      <div class="span12 oclc-result-record">
+        <pre><code>${record.body|h}</code></pre>
       </div>
     </div>
   </div>

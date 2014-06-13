@@ -12,7 +12,7 @@ class OCLCSearcher < Struct.new(:base_url, :wskey)
 
 
   def self.do_get(params, base_url)
-    hash = params.hash
+    hash = [base_url, params].hash
 
     unless cache.has_key?(hash)
       uri = URI(base_url)
@@ -24,30 +24,64 @@ class OCLCSearcher < Struct.new(:base_url, :wskey)
         raise OCLCSearchException.new("Error during OCLC Catalog search: #{response.body}")
       end
 
-      cache[hash] = response.body
+      cache[hash] = response.body.force_encoding('UTF-8')
     end
 
     cache[hash]
   end
 
 
-  def search(query, start = 1)
-    body = get_search_results(query, start)
-    OCLCSearchResults.new(query, body)
+  def get_records(oclcns)
+    records = []
+
+    oclcns.each do |oclcn|
+      begin
+        xml = self.find(oclcn)
+        if xml =~ /Record does not exist/
+          records << {:oclcn => oclcn, :error => xml}
+        else
+          records << {:oclcn => oclcn, :xml => xml}
+        end
+      rescue OCLCSearchException => e
+        records << {:oclcn => oclcn, :error => e.message}
+      end
+    end
+
+    records
   end
 
 
-  private
+  def write_records(ids)
 
-  def get_search_results(query, start)
-    oclc_params = {
-      :q => query,
-      :start => start.to_s,
-    }
+    tempfiles = []
+
+    get_records(ids).each do |record|
+
+      tempfile = ASUtils.tempfile('oclc_import')
+      tempfile.write(record[:xml])
+
+      tempfile.flush
+      tempfile.rewind
+
+      puts tempfile.path
+
+      tempfiles << tempfile
+    end
+
+    tempfiles
+  end
+
+  
+  # Get a catalog record using an ID
+  def find(oclcn)
+    oclc_params = {}
     oclc_params[:wskey] = wskey if wskey
 
-    body = self.class.do_get(oclc_params, base_url)
+    url = "#{base_url}/content/#{oclcn}"
+
+    body = self.class.do_get(oclc_params, url)
   end
+
 end
 
 

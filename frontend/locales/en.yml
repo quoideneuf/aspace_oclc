@@ -6,16 +6,20 @@ en:
       metadata_key: OCLC Metadata API key
       metadata_secret: OCLC Metadata Secret
       search_catalog: Import Accessions from OCLC
+      enter_ids: Type or Paste up to 10 OCLC Identifiers in the box below.
       actions:
         search: Search
         select: Select
-        import: Import Selected
+        preview: Preview
+        import: Import
         read_more: Read more
         read_less: Read less
+
       messages:
         selected: Selected
         none_selected: None Selected
         missing_from_config: "The following values need to be configured before the OCLC importer will work: %{params}. Contact your system's administrator."
         import_success: Import job created
-        import_success_message: Redirecting to the job status page..       
+        import_success_message: Redirecting to the job status page..
+        fewer_than_ten: Please enter 10 or fewer OCLC Identifiers
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"

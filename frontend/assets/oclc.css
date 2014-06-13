@@ -56,3 +56,7 @@
     border-bottom: 1px solid #Fafafa;
     padding: 5px 0;
 }
+
+li.failure a, li.failure a:focus, li.failure a:hover {
+  color: red;
+}
