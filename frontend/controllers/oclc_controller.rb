@@ -2,7 +2,7 @@ require 'securerandom'
 
 
 class OclcController <  ApplicationController
-  set_access_control "update_archival_record" => [:import, :preview, :index]
+  set_access_control "update_accession_record" => [:import, :preview, :index]
 
   def index
     missing = []
@@ -10,14 +10,6 @@ class OclcController <  ApplicationController
     unless AppConfig.has_key?(:oclc_search_key)
       missing << I18n.t('plugins.oclc.search_key')
     end
-
-    # unless AppConfig.has_key?(:oclc_metadata_key)
-    #   missing << I18n.t('plugins.oclc.metadata_key')
-    # end
-
-    # unless AppConfig.has_key?(:oclc_metadata_secret)
-    #   missing << I18n.t('plugins.oclc.metadata_secret')
-    # end
 
     unless missing.empty?
       flash[:warning] = I18n.t('plugins.oclc.messages.missing_from_config', :params => missing.join(", "))
