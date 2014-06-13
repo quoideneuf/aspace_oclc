@@ -2,8 +2,7 @@ require 'securerandom'
 
 
 class OclcController <  ApplicationController
-  set_access_control "view_repository" => [:index, :search]
-  set_access_control "update_archival_record" => [:import]
+  set_access_control "update_archival_record" => [:import, :preview, :index]
 
   def index
     missing = []
