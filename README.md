@@ -28,12 +28,9 @@ See also:
 
   https://github.com/archivesspace/archivesspace/blob/master/plugins/README.md
 
-You will need keys for two OCLC web services (Search API and Metadata API). You can use the same key for both, or different keys.
-You will also need a secret for the Metadata API. Contact OCLC for more information:
+You will need a key for the OCLC Search API. Contact OCLC for more information:
 
     AppConfig[:oclc_search_key] = { Your Search API Key }
-    AppConfig[:oclc_metadata_key] = { Your Metadata API Key }
-    AppConfig[:oclc_metadata_secrete] = { Your Metadata Secret }
 
 Note that the plugin directory must be 'oclc' or the menu item will not appear in the staff UI.
 
