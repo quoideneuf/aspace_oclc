@@ -9,14 +9,10 @@ Download the latest release from the Releases tab in Github:
 
   https://github.com/lcdhoffman/aspace_oclc/releases
 
-Unzip the release and move it to:
-
-    /path/to/archivesspace/plugins
-
-Unzip it:
+Unzip it to the plugins directory:
 
     $ cd /path/to/archivesspace/plugins
-    $ unzip oclc.zip -d oclc
+    $ unzip /path/to/your/downloaded/oclc.zip -d oclc
 
 Enable the plugin by editing the file in `config/config.rb`:
 
@@ -28,11 +24,15 @@ See also:
 
   https://github.com/archivesspace/archivesspace/blob/master/plugins/README.md
 
-You will need a key for the OCLC Search API. Contact OCLC for more information:
+You will need a key, secret, and principal_id for the OCLC Metadata API: 
+ 
+    AppConfig[:oclc_metadata_key] = { Your Metadata API Key }
+    AppConfig[:oclc_metadata_secret] = { Your Metadata API Key }
+    AppConfig[:oclc_principal_id] = { Your OCLC Principal ID }
 
-    AppConfig[:oclc_search_key] = { Your Search API Key }
+Contact OCLC to acquire these. You can read about the service here:
 
-Note that the plugin directory must be 'oclc' or the menu item will not appear in the staff UI.
+  http://www.oclc.org/developer/develop/web-services/worldcat-metadata-api.en.html
 
 Note that this plugin will not work with a version of ArchivesSpace that is missing this commit, which adds the accession importer:
 
@@ -43,5 +43,5 @@ Note that this plugin will not work with a version of ArchivesSpace that is miss
 Users with appropriate permissions will be able to use a menu item
 in the Plugins section of the toolbar to import OCLC records.
 
-Start by entering a search term and viewing the results. Select items to import by clicking "Select". Start the import job by clicking "Import"
+Start by entering a list of OCLC numbers and previewing the results. Start the import job by clicking "Import".
 
