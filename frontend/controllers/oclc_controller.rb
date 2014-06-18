@@ -7,8 +7,10 @@ class OclcController <  ApplicationController
   def index
     missing = []
 
-    unless AppConfig.has_key?(:oclc_search_key)
-      missing << I18n.t('plugins.oclc.search_key')
+    %w(search_key metadata_key metadata_secret principal_id).each do |setting|
+      unless AppConfig.has_key?(:"oclc_#{setting}")
+        missing << I18n.t("plugins.oclc.#{setting}")
+      end
     end
 
     unless missing.empty?
@@ -19,41 +21,34 @@ class OclcController <  ApplicationController
   end
 
 
-  def preview(searcher, ids)
+  def preview(oclcns)
 
     begin 
-      results = {:records => searcher.get_records(ids)}
+      results = {:records => record_getter.get_records(oclcns)}
 
       render :json => ASUtils.to_json(results)
 
-    rescue OCLCSearchException => e
+    rescue OCLCMetadataException => e
       render :json => {:error => e.message}
     end
   end
 
 
   def import
-    key = AppConfig.has_key?(:oclc_search_key) ? AppConfig[:oclc_search_key] : nil
+    oclcns = params[:ids].split(/\D+/).uniq.select {|id| id =~ /^\d+$/}
 
-    ids = params[:ids].split(/\D+/).uniq.select {|id| id =~ /^\d+$/}
-
-    if ids.count > 10
-      render :json => {:error => I18n.t("plugins.oclc.messages.fewer_than_ten") + ids.join(', ')}
+    if oclcns.count > 10
+      render :json => {:error => I18n.t("plugins.oclc.messages.fewer_than_ten") + oclcns.join(', ')}
       return
     end
     
-    searcher = OCLCSearcher.new(OCLCBaseUrl.search_api, key)
-
     if params[:preview]
-      preview(searcher, ids)
+      preview(oclcns)
       return
     end
 
     begin
-
-      files = searcher.write_records(ids)
-
-
+      files = record_getter.write_records(oclcns)
       job = Job.new("marcxml_accession", 
                     Hash[files.map {|file| ["oclc_import_#{SecureRandom.uuid}", file] }])
         
@@ -75,5 +70,13 @@ class OclcController <  ApplicationController
         render :status => 403, :text => "Unauthorized Access"
       }
     end
+  end
+
+  private
+
+  def record_getter
+    @opts ||= [:oclc_metadata_key, :oclc_metadata_secret, :oclc_principal_id].map {|setting| AppConfig[setting]}
+
+    @getter ||= OCLCBibGetter.new(OCLCBaseUrl.metadata_api, *@opts)
   end
 end

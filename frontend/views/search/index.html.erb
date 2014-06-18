@@ -17,11 +17,11 @@
               </div>
             </div>              
             <div class='control-group'> 
-              <button type="submit" class="btn btn-primary" id="search-submit" name="preview">
+              <button type="submit" class="btn btn-primary" id="search-submit" name="preview" data-loading-text="<%= I18n.t('plugins.oclc.messages.getting_records') %>">
                <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
                <%= I18n.t("plugins.oclc.actions.preview") %>
               </button>
-              <button type="submit" class="btn btn-primary" id="import-submit" disabled="disabled">
+              <button type="submit" class="btn btn-primary" id="import-submit" disabled="disabled" data-loading-text="<%= I18n.t('plugins.oclc.messages.importing_records') %>">
                <%= image_tag "archivesspace/btn-busy.gif", :class=>"btn-busy-icon" %>
                <%= I18n.t("plugins.oclc.actions.import") %>
               </button>

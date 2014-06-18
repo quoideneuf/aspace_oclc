@@ -75,6 +75,16 @@ $(function () {
   });
 
 
+  $('#search-submit').on('click', function() {
+    $(this).button('loading');
+  });
+
+
+  $('#import-submit').on('click', function() {
+    $(this).button('loading');
+  });
+
+
   $oclcSingleForm.ajaxForm({
     url: APP_PATH + "plugins/oclc/import",
     data: {},
@@ -97,11 +107,11 @@ $(function () {
       } else {
         alert("Something went wrong.");
       }
-      $("#search-submit").removeAttr('disabled');
+      $("#search-submit").removeAttr('disabled').button('reset');
     },
     error: function(xhr, textStatus, errorThrows) {
       AS.openQuickModal("Server Error", errorThrows);
-      $("#search-submit").removeAttr('disabled');
+      $("#search-submit").removeAttr('disabled').button('reset');
     },
   });
 

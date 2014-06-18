@@ -1,6 +1,5 @@
 require_relative 'spec_helper'
 require_relative '../frontend/models/oclc_searcher'
-require_relative '../frontend/models/oclc_search_results'
 require_relative '../frontend/models/oclc_bib_getter'
 
 describe "OCLC Clientware" do
@@ -25,6 +24,7 @@ describe "OCLC Clientware" do
       results.hit_count.should be > 1140
     end
   end
+
 
   describe "OCLCSearchResults" do
 
@@ -55,8 +55,12 @@ describe "OCLC Clientware" do
       "https://worldcat.org/bib/data"
     }
 
+    def get_getter
+      OCLCBibGetter.new(base_url, @wscred['metadata']['key'], @wscred['metadata']['secret'], @wscred['metadata']['principal_id'])
+    end
+
     it "can get a bib record out of the catalog" do
-      bib = OCLCBibGetter.new(base_url, @wscred['search']['key'], @wscred['search']['secret'])
+      bib = get_getter
       
       rec = bib.get(722914006)
 
@@ -66,15 +70,17 @@ describe "OCLC Clientware" do
 
 
     it "can take a set of OCLC ids and create a Marc XML collection" do
-      bib = OCLCBibGetter.new(base_url, @wscred['search']['key'], @wscred['search']['secret'])
+      bib = get_getter
 
       ids = [722914006, 857981913, 51047061]
 
-      tempfile = bib.capture_marc_records(ids)
-      doc = parse(IO.read(tempfile))
+      files = bib.write_records(ids)
+      files.each do |file|
+        doc = parse(IO.read(file))
 
-      doc.xpath("/collection/record").length.should eq(3)
-      doc.xpath("//datafield[@tag='245']").length.should eq(3)
+        doc.xpath("//record").length.should eq(1)
+        doc.xpath("//datafield[@tag='245']").length.should eq(1)
+      end
     end
   end
 end
