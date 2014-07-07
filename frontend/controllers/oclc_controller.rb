@@ -37,6 +37,8 @@ class OclcController <  ApplicationController
   def import
     oclcns = params[:ids].split(/\D+/).uniq.select {|id| id =~ /^\d+$/}
 
+    OCLCLog.log("Import OCLCNs: #{oclcns.join(', ')}")
+
     if oclcns.count > 10
       render :json => {:error => I18n.t("plugins.oclc.messages.fewer_than_ten") + oclcns.join(', ')}
       return
@@ -52,6 +54,8 @@ class OclcController <  ApplicationController
       job = Job.new("marcxml_accession", 
                     Hash[files.map {|file| ["oclc_import_#{SecureRandom.uuid}", file] }])
         
+      OCLCLog.log("Job Object:")
+      OCLCLog.log job.inspect
 
       response = job.upload
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}

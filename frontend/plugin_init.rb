@@ -1,4 +1,7 @@
 require 'rubygems'
+require "jsonmodel"
+require "jsonmodel_client"
+
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'gems', 'oclc-auth-0.1.1', 'lib')))
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'gems', 'rest-client-1.6.7', 'lib')))
@@ -8,3 +11,28 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'gems', 'ruf
 my_routes = [File.join(File.dirname(__FILE__), "routes.rb")]
 ArchivesSpace::Application.config.paths['config/routes'].concat(my_routes)
 
+
+class OCLCLog
+
+  @log_path = File.join(ASUtils.find_base_directory, 'logs', 'oclc.out')
+
+  def self.log(something)
+    File.open(@log_path, 'a') {|f| 
+      f.write(something) 
+      f.write("\n")
+    }
+  end
+end
+
+OCLCLog.log("OCLC Plugin Init")
+
+
+JSONModel::HTTP.module_eval do
+
+  def self.http_conn
+    OCLCLog.log("HTTP CONN")
+    @http = Net::HTTP::Persistent.new 'jsonmodel_client'
+    @http.read_timeout = 1200
+    @http
+  end
+end
