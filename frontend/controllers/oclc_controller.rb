@@ -7,7 +7,7 @@ class OclcController <  ApplicationController
   def index
     missing = []
 
-    %w(search_key metadata_key metadata_secret principal_id).each do |setting|
+    %w(metadata_key metadata_secret principal_id).each do |setting|
       unless AppConfig.has_key?(:"oclc_#{setting}")
         missing << I18n.t("plugins.oclc.#{setting}")
       end

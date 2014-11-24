@@ -1,6 +1,7 @@
 require 'rubygems'
-require "jsonmodel"
-require "jsonmodel_client"
+require 'jsonmodel'
+require 'jsonmodel_client'
+require 'fileutils'
 
 
 $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'gems', 'oclc-auth-0.1.1', 'lib')))
@@ -11,6 +12,7 @@ $:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'gems', 'ruf
 my_routes = [File.join(File.dirname(__FILE__), "routes.rb")]
 ArchivesSpace::Application.config.paths['config/routes'].concat(my_routes)
 
+FileUtils.mkdir_p(File.join(ASUtils.find_base_directory, 'logs'))
 
 class OCLCLog
 

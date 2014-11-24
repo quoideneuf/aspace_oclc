@@ -2,7 +2,6 @@ en:
   plugins:
     oclc:
       label: Import OCLC Records
-      search_key: OCLC Search API key
       metadata_key: OCLC Metadata API key
       metadata_secret: OCLC Metadata Secret
       principal_id: OCLC Principal ID
