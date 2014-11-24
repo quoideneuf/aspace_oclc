@@ -29,12 +29,12 @@ end
 OCLCLog.log("OCLC Plugin Init")
 
 
-JSONModel::HTTP.module_eval do
+# JSONModel::HTTP.module_eval do
 
-  def self.http_conn
-    OCLCLog.log("HTTP CONN")
-    @http = Net::HTTP::Persistent.new 'jsonmodel_client'
-    @http.read_timeout = 1200
-    @http
-  end
-end
+#   def self.http_conn
+#     OCLCLog.log("HTTP CONN")
+#     @http = Net::HTTP::Persistent.new 'jsonmodel_client'
+#     @http.read_timeout = 1200
+#     @http
+#   end
+# end

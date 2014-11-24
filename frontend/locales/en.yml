@@ -23,4 +23,5 @@ en:
         import_success: Import job created
         import_success_message: Redirecting to the job status page..
         fewer_than_ten: Please enter 10 or fewer OCLC Identifiers
+        no_repo: Please select an active repository before proceeding
       result_summary: "Page %{page} - Showing results %{first_record_index} to %{last_record_index} of %{hit_count} matches"

@@ -13,6 +13,10 @@ class OclcController <  ApplicationController
       end
     end
 
+    unless session[:repo_id]
+      flash[:warning] = I18n.t('plugins.oclc.messages.no_repo')
+    end
+
     unless missing.empty?
       flash[:warning] = I18n.t('plugins.oclc.messages.missing_from_config', :params => missing.join(", "))
     end
@@ -58,8 +62,12 @@ class OclcController <  ApplicationController
       OCLCLog.log job.inspect
 
       response = job.upload
+
+      OCLCLog.log response.inspect
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
     rescue
+      OCLCLog.log "Rescue Job Redirect Error"
+      OCLCLog.log $!.to_s
       render :json => {'error' => $!.to_s}
     end
   end
