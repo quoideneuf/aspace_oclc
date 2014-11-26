@@ -41,8 +41,6 @@ class OclcController <  ApplicationController
   def import
     oclcns = params[:ids].split(/\D+/).uniq.select {|id| id =~ /^\d+$/}
 
-    OCLCLog.log("Import OCLCNs: #{oclcns.join(', ')}")
-
     if oclcns.count > 10
       render :json => {:error => I18n.t("plugins.oclc.messages.fewer_than_ten") + oclcns.join(', ')}
       return
@@ -58,18 +56,36 @@ class OclcController <  ApplicationController
       job = Job.new("marcxml_accession", 
                     Hash[files.map {|file| ["oclc_import_#{SecureRandom.uuid}", file] }])
         
-      OCLCLog.log("Job Object:")
-      OCLCLog.log job.inspect
 
-      response = job.upload
+      # Workaround for presumed Windows bug in multipart-post 1.2
+      # https://github.com/nicksieger/multipart-post
 
-      OCLCLog.log response.inspect
+      # response = job.upload
+      response = string_based_upload(job)
+
       render :json => {'job_uri' => url_for(:controller => :jobs, :action => :show, :id => response['id'])}
     rescue
-      OCLCLog.log "Rescue Job Redirect Error"
-      OCLCLog.log $!.to_s
       render :json => {'error' => $!.to_s}
     end
+  end
+
+  # workaround rewrite for frontend model Job
+  # upload method, see comments above
+  def string_based_upload(job)
+    upload_files = job.instance_variable_get(:@files).each_with_index.map {|file, i|
+      (original_filename, stream) = file
+      io = File.open(stream)
+      stringIO = StringIO.new(io.read)
+      ["files[#{i}]", UploadIO.new(stringIO, "text/plain", original_filename)]
+    }
+
+    payload = Hash[upload_files].merge('job' => job.instance_variable_get(:@job).to_json)
+
+    response = JSONModel::HTTP.post_form(JSONModel(:job).uri_for(nil),
+                                         payload,
+                                         :multipart_form_data)
+
+    ASUtils.json_parse(response.body)
   end
 
 
